@@ -1,0 +1,9 @@
+version: "3"
+
+services:
+  conteneur_nul:
+    image: debian
+    entrypoint: sleep 9999
+  conteneur_flopesque:
+    image: debian
+    entrypoint: sleep 9999

@@ -317,3 +317,10 @@ Cet exemple d'application est vraiment naze 👎
 - dans le compte-rendu je veux :
   - toutes les commandes que vous avez tapées
   - l'URL de votre image sur la WebUI du Docker Hub
+
+
+```
+docker build . -t jgbry/b3customflask:partiec
+docker login
+docker push jgbry/b3customflask:partiec
+```

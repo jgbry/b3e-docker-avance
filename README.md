@@ -122,6 +122,22 @@ docker.elastic.co/logstash/logstash             7.17.10   8fb88ff8789c   2 years
 - lancez un terminal `bash` ou `sh` à l'intérieur du conteneur
 - vérifiez que la commande `python` est installée dans le conteneur, à la bonne version
 
+```
+juliangabry@MacBook-Air-24 b3e-docker-avance % docker run -it debian bash
+Unable to find image 'debian:latest' locally
+latest: Pulling from library/debian
+Digest: sha256:0d8498a0e9e6a60011df39aab78534cfe940785e7c59d19dfae1eb53ea59babe
+Status: Downloaded newer image for debian:latest
+root@bc953ce64a18:/#
+
+juliangabry@MacBook-Air-24 b3e-docker-avance % docker ps 
+CONTAINER ID   IMAGE     COMMAND         CREATED         STATUS         PORTS     NAMES
+c19f39d05d37   debian    "sleep 99999"   5 seconds ago   Up 4 seconds             beautiful_khorana
+
+juliangabry@MacBook-Air-24 b3e-docker-avance % docker exec -it c19 bash
+root@c19f39d05d37:/# 
+```
+
 > *Sympa d'installer Python dans une version spéficique en une commande non ? Peu importe que Python soit déjà installé sur le système ou pas. Puis on détruit le conteneur si on en a plus besoin.*
 
 # II. Construire une image
@@ -140,6 +156,12 @@ Dans ce repo git vous avez le [code](./app/app.py) et le fichier `Dockerfile` qu
 - vrai tech le fait avec une commande et la met dans le compte-rendu
 - créer un dossier et déplacer dedans le fichier de code et le `Dockerfile`
 
+```
+juliangabry@MacBook-Air-24 b3e-docker-avance % git clone https://gitlab.com/it4lik/b3e-docker-avance.git
+Cloning into 'b3e-docker-avance'...
+remote: Enumerating objects: 97, done.
+```
+
 🌞 **Build une image `meow-api`**
 
 - depuis un terminal, déplacez-vous dans le dossier qui contient le `Dockerfile`
@@ -153,13 +175,57 @@ docker build . -t meow-api
 
 > Le build devrait être super rapide puisque vous avez déjà cette image. Docker ne stocke jamais deux fois la même chose.
 
+```
+juliangabry@MacBook-Air-24 depot % docker build . -t meow-api
+[+] Building 13.6s (10/10) FINISHED                                                                                 docker:desktop-linux
+ => [internal] load build definition from Dockerfile                                                                                0.0s
+ => => transferring dockerfile: 559B                                                                                                0.0s
+ => [internal] load metadata for docker.io/library/python:3                                                                         1.2s
+ => [internal] load .dockerignore                                                                                                   0.0s
+ => => transferring context: 2B                                                                                                     0.0s
+ => [1/5] FROM docker.io/library/python:3@sha256:5f69d22a88dd4cc4ee1576def19aef48c8faa1b566054c44291183831cbad13b                   0.1s
+ => => resolve docker.io/library/python:3@sha256:5f69d22a88dd4cc4ee1576def19aef48c8faa1b566054c44291183831cbad13b                   0.0s
+ => [internal] load build context                                                                                                   0.0s
+ => => transferring context: 1.62kB                                                                                                 0.0s
+ => [2/5] WORKDIR /app                                                                                                              0.0s
+ => [3/5] COPY ./requirements.txt .                                                                                                 0.0s
+ => [4/5] RUN pip install --no-cache
+ ...
+```
+
 🌞 **Afficher la liste des images dispos sur votre machine**
 
 - dans la sortie de la commande, on devrait voir `meow-api` que vous venez de build
 
+```
+juliangabry@MacBook-Air-24 depot % docker images
+REPOSITORY                                      TAG       IMAGE ID       CREATED         SIZE
+meow-api                                        latest    3b765564d54e   2 minutes ago   1.62GB
+it4lik/meow-api                                 arm       aa62b5955aa8   5 hours ago     1.62GB
+linuxserver/wikijs                              latest    f997a921b769   9 days ago      788MB
+debian                                          latest    0d8498a0e9e6   13 days ago     204MB
+python                                          3.11      ce3b954c9285   2 weeks ago     1.46GB
+wordpress                                       latest    1931132b0b93   7 weeks ago     985MB
+mysql                                           8.0.42    989149970547   2 months ago    1.05GB
+docker.elastic.co/elasticsearch/elasticsearch   7.17.10   bc7ba1dc5067   2 years ago     1.01GB
+docker.elastic.co/kibana/kibana                 7.17.10   4426892d5a87   2 years ago     1.42GB
+docker.elastic.co/logstash/logstash             7.17.10   8fb88ff8789c   2 years ago     1.28GB
+```
+
 🌞 **Run cette image**
 
 - faites un `docker run` qui lance l'image nouvellement build
+
+```
+juliangabry@MacBook-Air-24 depot % docker run -p 8000:8000 meow-api
+ * Serving Flask app 'app'
+ * Debug mode: off
+WARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8000
+ * Running on http://172.17.0.2:8000
+Press CTRL+C to quit
+```
 
 ## B. Packagez vous-même une app
 
@@ -181,10 +247,36 @@ print(emoji.emojize("Cet exemple d'application est vraiment naze :thumbs_down:")
 - déplace-toi dans ton répertoire 
 - `docker build . -t python_app:version_de_ouf`
 
+```
+juliangabry@MacBook-Air-24 B % docker build . -t meow-api_v2   
+[+] Building 4.3s (11/11) FINISHED                                                                                                                                          docker:desktop-linux
+ => [internal] load build definition from Dockerfile                                                                                                                                        0.0s
+ => => transferring dockerfile: 559B                                                                                                                                                        0.0s
+ => [internal] load metadata for docker.io/library/python:3                                                                                                                                 1.1s
+ => [auth] library/python:pull token for registry-1.docker.io                                                                                                                               0.0s
+ => [internal] load .dockerignore                                                                                                                                                           0.0s
+ => => transferring context: 2B   
+ ```
 
 🌞 **Proof !**
 
 - une fois le build terminé, constater que l'image est dispo avec une commande `docker`
+
+```
+juliangabry@MacBook-Air-24 B % docker images
+REPOSITORY                                      TAG       IMAGE ID       CREATED              SIZE
+meow-api_v2                                     latest    06d91e4c8a7d   About a minute ago   1.49GB
+meow-api                                        latest    4d5f8013b96d   39 minutes ago       1.62GB
+it4lik/meow-api                                 arm       aa62b5955aa8   5 hours ago          1.62GB
+linuxserver/wikijs                              latest    f997a921b769   10 days ago          788MB
+debian                                          latest    0d8498a0e9e6   13 days ago          204MB
+python                                          3.11      ce3b954c9285   2 weeks ago          1.46GB
+wordpress                                       latest    1931132b0b93   7 weeks ago          985MB
+mysql                                           8.0.42    989149970547   2 months ago         1.05GB
+docker.elastic.co/elasticsearch/elasticsearch   7.17.10   bc7ba1dc5067   2 years ago          1.01GB
+docker.elastic.co/kibana/kibana                 7.17.10   4426892d5a87   2 years ago          1.42GB
+docker.elastic.co/logstash/logstash             7.17.10   8fb88ff8789c   2 years ago          1.28GB
+```
 
 🌞 **Lancer l'image**
 
@@ -192,6 +284,11 @@ print(emoji.emojize("Cet exemple d'application est vraiment naze :thumbs_down:")
 
 ```bash
 docker run python_app:version_de_ouf
+```
+
+```
+juliangabry@MacBook-Air-24 B % docker run -p 8000:8000 meow-api_v2
+Cet exemple d'application est vraiment naze 👎
 ```
 
 ## C. Ecrire votre propre Dockerfile

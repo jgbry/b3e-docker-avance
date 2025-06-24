@@ -82,6 +82,23 @@ Le but : on a juste à `docker compose up` pour lancer votre projet : aucune dé
   - ajoutez `--build` si nécessaire
 - suivi d'un `curl` qui prouve que le service fonctionne
 
+```
+juliangabry@MacBook-Air-24 docker avancé % wget  http://localhost:8096
+--2025-06-24 12:00:16--  http://localhost:8096/
+Résolution de localhost (localhost)… ::1, 127.0.0.1
+Connexion à localhost (localhost)|::1|:8096… connecté.
+requête HTTP transmise, en attente de la réponse… 302 Found
+Emplacement : web/ [suivant]
+--2025-06-24 12:00:16--  http://localhost:8096/web/
+Réutilisation de la connexion existante à [localhost]:8096.
+requête HTTP transmise, en attente de la réponse… 200 OK
+Taille : 9723 (9,5K) [text/html]
+Sauvegarde en : « index.html »
+
+docker build -t jellyfin-custom .
+docker-compose up -d
+```
+
 ---
 
 ➜ [**Hop, un lien vers la partie 2**](./part2.md)

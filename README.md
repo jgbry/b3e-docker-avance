@@ -70,6 +70,15 @@ De plus, l'image est alors ***standalone*** : elle fonctionne juste quand on la 
   - il faudra explicitement préciser le nom du fichier vu qu'il n'est plus standard non plus !
 - suivi d'un `curl` qui prouve que le service fonctionne
 
+```
+docker compose -f docker-compose-prod.yml up --build -d
+juliangabry@MacBook-Air-24 b3e-docker-avance % wget http://localhost:8096/web/
+--2025-06-25 09:52:51--  http://localhost:8096/web/
+Resolving localhost (localhost)... ::1, 127.0.0.1
+Connecting to localhost (localhost)|::1|:8096... connected.
+HTTP request sent, awaiting response... 200 OK
+```
+
 ## 2. Dév
 
 ➜ **Ecrire un `Dockerfile-dev`**
@@ -111,6 +120,15 @@ De plus, l'image est alors ***standalone*** : elle fonctionne juste quand on la 
 - un `docker compose up` dans le compte-rendu
   - il faudra explicitement préciser le nom du fichier vu qu'il n'est plus standard non plus !
 - suivi d'un `curl` qui prouve que le service fonctionne
+
+```
+docker compose -f docker-compose-dev.yml up --build -d
+juliangabry@MacBook-Air-24 b3e-docker-avance % wget http://localhost:8096/web/
+--2025-06-25 09:52:51--  http://localhost:8096/web/
+Resolving localhost (localhost)... ::1, 127.0.0.1
+Connecting to localhost (localhost)|::1|:8096... connected.
+HTTP request sent, awaiting response... 200 OK
+```
 
 > **A PARTIR DE NOW** c'est censé être tout aussi pratique de use ton environnement Docker qu'un env installé sur ta machine, pendant que tu dév. Grâce au volume monté au moment du `run` en particulier, on dév dans notre IDE, et les changements sont accessibles dans l'environnement conteneurisé. Plus besoin d'installer quoi que ce soit sur nos machines, on fait passer le code ez, etc ! FAIS TOI DU BIEN et utilise Docker.
 

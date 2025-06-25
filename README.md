@@ -148,10 +148,6 @@ Toujours dans le même (ou pas) on pourra indiquer la suite des étapes pour `pr
 
 > De plus on couple encore plus fortement les deux environnements. On limite les différences potentielles entre `dev` et `prod` en l'occurrence, pour garder l'aspect prédictible et prévisible au maximum !
 
-```
-docker build --target dev -t jellyfin-dev .
-docker build --target prod -t jellyfin-prod .
-```
 
 ---
 
@@ -213,6 +209,12 @@ RUN echo prod
 
 - j'veux les deux commandes `docker build` dans le compte-rendu
 - il faut ajouter `--target` pour préciser quel environnement on veut build
+
+
+```
+docker build --target dev -t jellyfin-dev .
+docker build --target prod -t jellyfin-prod .
+```
 
 ---
 

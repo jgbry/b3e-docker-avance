@@ -1,0 +1,13 @@
+version: "3.8"
+
+services:
+  jellyfin:
+    build:
+      context: .
+      dockerfile: Dockerfile-dev
+    volumes:
+      - ./src:/app
+    ports:
+      - "8096:8096"
+    environment:
+      - ENVIRONMENT=dev

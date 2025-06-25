@@ -1,0 +1,11 @@
+version: "3.8"
+
+services:
+  jellyfin:
+    build:
+      context: .
+      dockerfile: Dockerfile-prod
+    ports:
+      - "8096:8096"
+    environment:
+      - ENVIRONMENT=prod

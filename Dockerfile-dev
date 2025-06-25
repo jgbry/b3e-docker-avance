@@ -21,9 +21,7 @@ RUN apt-get update && \
     \
     curl -L https://johnvansickle.com/ffmpeg/releases/ffmpeg-release-arm64-static.tar.xz \
     | tar -xJ -C /usr/local/bin --strip-components=1 --wildcards '*/ffmpeg' '*/ffprobe' && \
-    chmod +x /usr/local/bin/ffmpeg /usr/local/bin/ffprobe && \
-    \
-    apt-get clean && rm -rf /var/lib/apt/lists/*
+    chmod +x /usr/local/bin/ffmpeg /usr/local/bin/ffprobe &&
 
 EXPOSE 8096 8920 7359/udp 1900/udp
 

@@ -28,9 +28,7 @@ RUN set -eux; \
     wget -qO- \
       "https://johnvansickle.com/ffmpeg/releases/ffmpeg-release-${TARGETARCH}-static.tar.xz" \
       | tar xJ -C /usr/local/bin --strip-components=1 --wildcards '*/ffmpeg' '*/ffprobe'; \
-    chmod +x /usr/local/bin/ffmpeg /usr/local/bin/ffprobe; \
-    \
-    rm -rf /var/cache/apk/*
+    chmod +x /usr/local/bin/ffmpeg /usr/local/bin/ffprobe;
 
 EXPOSE 8096      \
        8920      \

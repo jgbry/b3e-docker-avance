@@ -1,0 +1,48 @@
+FROM alpine:3.22.0 AS base
+
+ARG TARGETARCH
+ARG JELLYFIN_VERSION=10.10.7
+
+RUN set -eux; \
+    apk add --no-cache \
+      tini \
+      wget \
+      xz \
+      tar \
+      libstdc++ \
+      libgcc \
+      icu-libs \
+      fontconfig \
+      freetype \
+      ttf-dejavu \
+      harfbuzz; \
+    \
+    mkdir -p /usr/lib/jellyfin; \
+    \
+    JELLYFIN_ARCH="${TARGETARCH}-musl"; \
+    wget -qO- \
+      "https://repo.jellyfin.org/files/server/linux/latest-stable/${JELLYFIN_ARCH}/jellyfin_${JELLYFIN_VERSION}-${JELLYFIN_ARCH}.tar.gz" \
+      | tar xz -C /usr/lib/jellyfin --strip-components=1; \
+    ln -s /usr/lib/jellyfin/jellyfin /usr/bin/jellyfin; \
+    \
+    wget -qO- \
+      "https://johnvansickle.com/ffmpeg/releases/ffmpeg-release-${TARGETARCH}-static.tar.xz" \
+      | tar xJ -C /usr/local/bin --strip-components=1 --wildcards '*/ffmpeg' '*/ffprobe'; \
+    chmod +x /usr/local/bin/ffmpeg /usr/local/bin/ffprobe; \
+    \
+    rm -rf /var/cache/apk/*
+
+EXPOSE 8096      \
+       8920      \
+       7359/udp  \
+       1900/udp
+
+WORKDIR /var/lib/jellyfin
+
+FROM base AS dev
+ENV ENVIRONMENT=dev
+CMD ["tini", "--", "jellyfin"]
+
+FROM base AS prod
+ENV ENVIRONMENT=prod
+ENTRYPOINT ["tini", "--", "jellyfin"]
